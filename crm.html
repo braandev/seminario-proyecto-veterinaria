@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel CRM - Veterinaria Rincon</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="crm-body">
+
+<div class="crm-shell">
+  <aside class="crm-sidebar">
+    <a href="index.html" class="crm-brand">
+      <div class="brand-icon">🐾</div>
+      Veterinaria Rincon
+    </a>
+
+    <nav class="crm-nav">
+      <a href="crm.html" class="active"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📅</span> Turnos</a>
+      <a href="#"><span>🐾</span> Mascotas</a>
+      <a href="#"><span>👤</span> Clientes</a>
+      <a href="farmacia.html"><span>💊</span> Farmacia</a>
+      <a href="#"><span>⚙️</span> Configuracion</a>
+    </nav>
+
+    <a href="login.html" class="crm-logout">← Cerrar sesion</a>
+  </aside>
+
+  <main class="crm-main">
+    <header class="crm-topbar">
+      <div>
+        <h1>Panel de gestion</h1>
+        <p>Bienvenido de nuevo, aca tenes un resumen de hoy.</p>
+      </div>
+      <div class="crm-user">
+        <span class="crm-user-avatar">👩‍⚕️</span>
+        Equipo Veterinario
+      </div>
+    </header>
+
+    <section class="crm-stats">
+      <div class="crm-stat">
+        <span class="crm-stat-num">128</span>
+        <span class="crm-stat-label">Turnos este mes</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num">342</span>
+        <span class="crm-stat-label">Mascotas registradas</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num">19</span>
+        <span class="crm-stat-label">Turnos hoy</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num">7</span>
+        <span class="crm-stat-label">Vacunas pendientes</span>
+      </div>
+    </section>
+
+    <section class="crm-panels">
+      <div class="crm-panel">
+        <h3>Proximos turnos</h3>
+        <div class="crm-empty">Todavia no hay turnos cargados en el sistema.</div>
+      </div>
+      <div class="crm-panel">
+        <h3>Ultimas mascotas atendidas</h3>
+        <div class="crm-empty">Todavia no hay pacientes cargados en el sistema.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>

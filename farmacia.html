@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmacia - CRM Veterinaria Rincon</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="crm-body">
+
+<div class="crm-shell">
+  <aside class="crm-sidebar">
+    <a href="index.html" class="crm-brand">
+      <div class="brand-icon">🐾</div>
+      Veterinaria Rincon
+    </a>
+
+    <nav class="crm-nav">
+      <a href="crm.html"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📅</span> Turnos</a>
+      <a href="#"><span>🐾</span> Mascotas</a>
+      <a href="#"><span>👤</span> Clientes</a>
+      <a href="farmacia.html" class="active"><span>💊</span> Farmacia</a>
+      <a href="#"><span>⚙️</span> Configuracion</a>
+    </nav>
+
+    <a href="login.html" class="crm-logout">← Cerrar sesion</a>
+  </aside>
+
+  <main class="crm-main">
+    <header class="crm-topbar">
+      <div>
+        <h1>Stock de farmacia</h1>
+        <p>Controla el inventario de medicamentos, vacunas e insumos.</p>
+      </div>
+      <button type="button" class="btn-hero-primary" id="toggle-add-btn">+ Agregar producto</button>
+    </header>
+
+    <section class="crm-stats">
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-total">0</span>
+        <span class="crm-stat-label">Productos en stock</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-low">0</span>
+        <span class="crm-stat-label">Con stock bajo</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-out">0</span>
+        <span class="crm-stat-label">Agotados</span>
+      </div>
+    </section>
+
+    <section class="crm-panel stock-add-panel" id="add-panel" hidden>
+      <div class="stock-panel-head">
+        <h3>Nuevo producto</h3>
+        <button type="button" class="stock-close-btn" id="close-add-btn" aria-label="Cerrar">✕</button>
+      </div>
+      <form id="add-product-form" class="stock-form">
+        <label class="login-field">
+          <span>Nombre</span>
+          <input type="text" name="nombre" placeholder="Ej: Vacuna Antirrabica" required>
+        </label>
+        <label class="login-field">
+          <span>Categoria</span>
+          <select name="categoria">
+            <option value="Medicamento">Medicamento</option>
+            <option value="Vacuna">Vacuna</option>
+            <option value="Insumo">Insumo / Accesorio</option>
+          </select>
+        </label>
+        <label class="login-field">
+          <span>Stock actual</span>
+          <input type="number" name="stock" min="0" value="0" required>
+        </label>
+        <label class="login-field">
+          <span>Stock minimo</span>
+          <input type="number" name="minimo" min="0" value="5" required>
+        </label>
+        <div class="stock-form-actions">
+          <button type="submit" class="btn-hero-primary">Guardar producto</button>
+          <button type="button" class="btn-admin" id="cancel-add-btn">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="crm-panel stock-panel">
+      <h3>Inventario</h3>
+      <div class="stock-table-wrap">
+        <table class="stock-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoria</th>
+              <th>Stock</th>
+              <th>Minimo</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="stock-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = 'vetrincon-stock';
+
+  const seed = [
+    { nombre: 'Vacuna Antirrabica', categoria: 'Vacuna', stock: 12, minimo: 8 },
+    { nombre: 'Vacuna Quintuple', categoria: 'Vacuna', stock: 2, minimo: 6 },
+    { nombre: 'Amoxicilina 250mg', categoria: 'Medicamento', stock: 0, minimo: 4 },
+    { nombre: 'Antiparasitario Frontline', categoria: 'Medicamento', stock: 3, minimo: 5 },
+    { nombre: 'Desparasitante Oral', categoria: 'Medicamento', stock: 14, minimo: 5 },
+    { nombre: 'Alimento Balanceado Adulto', categoria: 'Insumo', stock: 20, minimo: 10 },
+  ];
+
+  function loadProducts() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+    return seed;
+  }
+
+  function saveProducts(products) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+  }
+
+  function estadoDe(producto) {
+    if (producto.stock <= 0) return { label: 'Agotado', cls: 'out' };
+    if (producto.stock <= producto.minimo) return { label: 'Stock bajo', cls: 'low' };
+    return { label: 'En stock', cls: 'ok' };
+  }
+
+  function render() {
+    const products = loadProducts();
+    const tbody = document.getElementById('stock-tbody');
+    tbody.innerHTML = '';
+
+    let low = 0, out = 0;
+
+    products.forEach(function (p, index) {
+      const estado = estadoDe(p);
+      if (estado.cls === 'low') low++;
+      if (estado.cls === 'out') out++;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td class="stock-name">' + p.nombre + '</td>' +
+        '<td>' + p.categoria + '</td>' +
+        '<td>' + p.stock + '</td>' +
+        '<td>' + p.minimo + '</td>' +
+        '<td><span class="stock-badge ' + estado.cls + '">' + estado.label + '</span></td>' +
+        '<td><button type="button" class="stock-delete-btn" data-index="' + index + '" aria-label="Eliminar producto">🗑️</button></td>';
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('stat-total').textContent = products.length;
+    document.getElementById('stat-low').textContent = low;
+    document.getElementById('stat-out').textContent = out;
+  }
+
+  const addPanel = document.getElementById('add-panel');
+  const toggleBtn = document.getElementById('toggle-add-btn');
+  const cancelBtn = document.getElementById('cancel-add-btn');
+  const closeBtn = document.getElementById('close-add-btn');
+  const form = document.getElementById('add-product-form');
+
+  function closePanel() {
+    form.reset();
+    addPanel.hidden = true;
+  }
+
+  toggleBtn.addEventListener('click', function () {
+    addPanel.hidden = !addPanel.hidden;
+  });
+  cancelBtn.addEventListener('click', closePanel);
+  closeBtn.addEventListener('click', closePanel);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(form);
+    const products = loadProducts();
+    products.push({
+      nombre: data.get('nombre'),
+      categoria: data.get('categoria'),
+      stock: Number(data.get('stock')),
+      minimo: Number(data.get('minimo')),
+    });
+    saveProducts(products);
+    closePanel();
+    render();
+  });
+
+  document.getElementById('stock-tbody').addEventListener('click', function (e) {
+    const btn = e.target.closest('.stock-delete-btn');
+    if (!btn) return;
+    const index = Number(btn.dataset.index);
+    const products = loadProducts();
+    const producto = products[index];
+    if (!confirm('Seguro que queres eliminar "' + producto.nombre + '" del inventario?')) return;
+    products.splice(index, 1);
+    saveProducts(products);
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
