@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clientes y Mascotas - CRM Veterinaria Rincon</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="crm-body">
+
+<div class="crm-shell">
+  <aside class="crm-sidebar">
+    <a href="index.html" class="crm-brand">
+      <div class="brand-icon">🐾</div>
+      Veterinaria Rincon
+    </a>
+
+    <nav class="crm-nav">
+      <a href="crm.html"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📅</span> Turnos</a>
+      <a href="clientes.html" class="active"><span>🐾</span> Clientes y Mascotas</a>
+      <a href="farmacia.html"><span>💊</span> Farmacia</a>
+      <a href="#"><span>⚙️</span> Configuracion</a>
+    </nav>
+
+    <a href="login.html" class="crm-logout">← Cerrar sesion</a>
+  </aside>
+
+  <main class="crm-main">
+    <header class="crm-topbar">
+      <div>
+        <h1>Clientes y mascotas</h1>
+        <p>Consulta los clientes y las mascotas registradas en la veterinaria.</p>
+      </div>
+      <a href="mascota.html"><button type="button" class="btn-hero-primary">+ Agregar mascota</button></a>
+    </header>
+
+    <h2 class="section-title">Panel del veterinario</h2>
+    <section class="crm-stats">
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-turnos-proximos">0</span>
+        <span class="crm-stat-label">Turnos en los proximos 7 dias</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-vacunas-alerta">0</span>
+        <span class="crm-stat-label">Vacunas por vencer o vencidas</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-tratamientos">0</span>
+        <span class="crm-stat-label">Tratamientos activos</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-alertas-medicas">0</span>
+        <span class="crm-stat-label">Mascotas con alertas medicas</span>
+      </div>
+    </section>
+
+    <section class="crm-panels">
+      <div class="crm-panel">
+        <h3>📅 Proximos turnos</h3>
+        <div class="reminder-list" id="dash-turnos"></div>
+      </div>
+      <div class="crm-panel">
+        <h3>💉 Vacunacion proxima o vencida</h3>
+        <div class="reminder-list" id="dash-vacunas"></div>
+      </div>
+      <div class="crm-panel">
+        <h3>💊 Tratamientos activos</h3>
+        <div class="reminder-list" id="dash-tratamientos"></div>
+      </div>
+      <div class="crm-panel">
+        <h3>⚠️ Alertas medicas</h3>
+        <div class="reminder-list" id="dash-alertas"></div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Directorio</h2>
+    <section class="crm-stats">
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-clients">0</span>
+        <span class="crm-stat-label">Clientes</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-pets">0</span>
+        <span class="crm-stat-label">Mascotas registradas</span>
+      </div>
+    </section>
+
+    <section class="crm-panel">
+      <h3>Buscar cliente o mascota</h3>
+      <input type="text" id="search-input" class="search-input" placeholder="Buscar por nombre de cliente o de mascota...">
+    </section>
+
+    <section id="client-list" class="client-list"></section>
+    <div class="crm-empty" id="empty-state" hidden>No se encontraron clientes ni mascotas.</div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="delete-modal" hidden>
+  <div class="modal-card">
+    <span class="modal-icon">🗑️</span>
+    <h3>Eliminar cliente</h3>
+    <p id="delete-modal-text">¿Seguro que queres eliminar este cliente?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-admin" id="delete-cancel-btn">Cancelar</button>
+      <button type="button" class="btn-delete-confirm" id="delete-confirm-btn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/store.js"></script>
+<script>
+  function render() {
+    const clientes = loadClientes();
+    const mascotas = loadMascotas();
+    const term = document.getElementById('search-input').value.trim().toLowerCase();
+
+    const clienteById = {};
+    clientes.forEach(function (c) { clienteById[c.id] = c; });
+
+    const groups = {};
+    const order = [];
+    mascotas.forEach(function (m) {
+      if (!groups[m.clienteId]) { groups[m.clienteId] = []; order.push(m.clienteId); }
+      groups[m.clienteId].push(m);
+    });
+
+    const listEl = document.getElementById('client-list');
+    listEl.innerHTML = '';
+    let shownGroups = 0;
+
+    order.forEach(function (clienteId) {
+      const cliente = clienteById[clienteId];
+      if (!cliente) return;
+
+      let pets = groups[clienteId];
+      const clienteMatches = term && cliente.nombre.toLowerCase().includes(term);
+      if (term && !clienteMatches) {
+        pets = pets.filter(function (p) { return p.general.nombre.toLowerCase().includes(term); });
+      }
+      if (term && pets.length === 0) return;
+
+      shownGroups++;
+      const card = document.createElement('div');
+      card.className = 'client-group';
+
+      const petsHtml = pets.map(function (p) {
+        const foto = p.general.foto ? '<img src="' + p.general.foto + '" alt="' + p.general.nombre + '">' : '🐾';
+        const edad = calcularEdad(p.general.fechaNacimiento);
+        const metaParts = [p.general.raza || p.general.especie];
+        if (edad) metaParts.push(edad);
+        return (
+          '<a class="pet-card" href="mascota.html?id=' + p.id + '">' +
+            '<div class="pet-photo">' + foto + '</div>' +
+            '<div class="pet-name">' + p.general.nombre + '</div>' +
+            '<div class="pet-meta">' + metaParts.join(' · ') + '</div>' +
+          '</a>'
+        );
+      }).join('');
+
+      card.innerHTML =
+        '<div class="client-group-head">' +
+          '<div class="client-avatar">' + initialsOf(cliente.nombre) + '</div>' +
+          '<div class="client-group-info">' +
+            '<h4>' + cliente.nombre + '</h4>' +
+            '<span class="count">' + pets.length + (pets.length === 1 ? ' mascota' : ' mascotas') + '</span>' +
+          '</div>' +
+          '<button type="button" class="client-delete-btn" data-client-id="' + cliente.id + '" aria-label="Eliminar cliente">🗑️</button>' +
+        '</div>' +
+        '<div class="pet-grid">' + petsHtml + '</div>';
+
+      listEl.appendChild(card);
+    });
+
+    document.getElementById('empty-state').hidden = shownGroups > 0;
+    document.getElementById('stat-clients').textContent = clientes.length;
+    document.getElementById('stat-pets').textContent = mascotas.length;
+  }
+
+  function renderDashList(containerId, items, textFn, overdueFn) {
+    const container = document.getElementById(containerId);
+    if (items.length === 0) {
+      container.innerHTML = '<div class="crm-empty">Nada para mostrar por ahora.</div>';
+      return;
+    }
+    container.innerHTML = items.map(function (it) {
+      const overdue = overdueFn ? overdueFn(it) : false;
+      return '<a href="mascota.html?id=' + it.petId + '" class="reminder-item' + (overdue ? ' overdue' : '') + '">' + textFn(it) + '</a>';
+    }).join('');
+  }
+
+  function renderVetDashboard() {
+    const mascotas = loadMascotas();
+    const clientes = loadClientes();
+    const clienteById = {};
+    clientes.forEach(function (c) { clienteById[c.id] = c; });
+
+    const hoy = new Date();
+    const en7dias = new Date(hoy.getTime() + 7 * 86400000);
+
+    const turnosItems = [];
+    const vacunasItems = [];
+    const tratamientosItems = [];
+    const alertasItems = [];
+
+    mascotas.forEach(function (m) {
+      const dueno = clienteById[m.clienteId] ? clienteById[m.clienteId].nombre : 'Sin propietario';
+      const nombre = m.general.nombre || 'Mascota';
+
+      (m.turnos || []).forEach(function (t) {
+        if (!t.fecha) return;
+        const fechaTurno = new Date(t.fecha + 'T' + (t.hora || '00:00'));
+        if (fechaTurno >= hoy) {
+          turnosItems.push({
+            petId: m.id, sortDate: fechaTurno,
+            texto: '📅 ' + nombre + ' (' + dueno + ')' + (t.motivo ? ' — ' + t.motivo : '') + ' · ' + t.fecha + (t.hora ? ' ' + t.hora : ''),
+          });
+        }
+      });
+
+      (m.vacunas || []).forEach(function (v) {
+        if (!v.proximaDosis) return;
+        const dias = (new Date(v.proximaDosis) - hoy) / 86400000;
+        if (dias <= 30) {
+          const vencida = dias < 0;
+          vacunasItems.push({
+            petId: m.id, fecha: v.proximaDosis, vencida: vencida,
+            texto: (vencida ? '🔴 ' : '🟠 ') + nombre + ' (' + dueno + ') — ' + v.nombre + ' · ' + v.proximaDosis,
+          });
+        }
+      });
+
+      (m.medicaciones || []).forEach(function (med) {
+        if (med.estado === 'Activo') {
+          tratamientosItems.push({
+            petId: m.id,
+            texto: '💊 ' + nombre + ' (' + dueno + ') — ' + med.medicamento + (med.dosis ? ', ' + med.dosis : ''),
+          });
+        }
+      });
+
+      const medica = m.medica || {};
+      const partes = [medica.alergias, medica.alergiasAlimentarias, medica.enfermedadesCronicas].filter(Boolean);
+      if (partes.length) {
+        alertasItems.push({
+          petId: m.id,
+          texto: '⚠️ ' + nombre + ' (' + dueno + ') — ' + partes.join(' · '),
+        });
+      }
+    });
+
+    turnosItems.sort(function (a, b) { return a.sortDate - b.sortDate; });
+    vacunasItems.sort(function (a, b) { return new Date(a.fecha) - new Date(b.fecha); });
+
+    renderDashList('dash-turnos', turnosItems.slice(0, 6), function (it) { return it.texto; });
+    renderDashList('dash-vacunas', vacunasItems.slice(0, 6), function (it) { return it.texto; }, function (it) { return it.vencida; });
+    renderDashList('dash-tratamientos', tratamientosItems.slice(0, 6), function (it) { return it.texto; });
+    renderDashList('dash-alertas', alertasItems.slice(0, 6), function (it) { return it.texto; }, function () { return true; });
+
+    document.getElementById('stat-turnos-proximos').textContent = turnosItems.filter(function (it) { return it.sortDate <= en7dias; }).length;
+    document.getElementById('stat-vacunas-alerta').textContent = vacunasItems.length;
+    document.getElementById('stat-tratamientos').textContent = tratamientosItems.length;
+    document.getElementById('stat-alertas-medicas').textContent = alertasItems.length;
+  }
+
+  document.getElementById('search-input').addEventListener('input', render);
+
+  const deleteModal = document.getElementById('delete-modal');
+  const deleteModalText = document.getElementById('delete-modal-text');
+  let pendingDeleteClientId = null;
+
+  function closeDeleteModal() { deleteModal.hidden = true; pendingDeleteClientId = null; }
+
+  document.getElementById('client-list').addEventListener('click', function (e) {
+    const btn = e.target.closest('.client-delete-btn');
+    if (!btn) return;
+    pendingDeleteClientId = btn.dataset.clientId;
+    const cliente = loadClientes().find(function (c) { return c.id === pendingDeleteClientId; });
+    const cantMascotas = loadMascotas().filter(function (m) { return m.clienteId === pendingDeleteClientId; }).length;
+    deleteModalText.textContent = '¿Seguro que queres eliminar a "' + (cliente ? cliente.nombre : '') + '"' +
+      (cantMascotas > 0 ? ' junto con ' + cantMascotas + (cantMascotas === 1 ? ' mascota asociada' : ' mascotas asociadas') : '') + '?';
+    deleteModal.hidden = false;
+  });
+
+  document.getElementById('delete-cancel-btn').addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function (e) { if (e.target === deleteModal) closeDeleteModal(); });
+
+  document.getElementById('delete-confirm-btn').addEventListener('click', function () {
+    if (!pendingDeleteClientId) return;
+    const clientes = loadClientes().filter(function (c) { return c.id !== pendingDeleteClientId; });
+    const mascotas = loadMascotas().filter(function (m) { return m.clienteId !== pendingDeleteClientId; });
+    saveClientes(clientes);
+    saveMascotas(mascotas);
+    closeDeleteModal();
+    render();
+    renderVetDashboard();
+  });
+
+  render();
+  renderVetDashboard();
+</script>
+
+</body>
+</html>

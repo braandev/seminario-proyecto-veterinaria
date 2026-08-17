@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de mascota - CRM Veterinaria Rincon</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="crm-body">
+
+<div class="crm-shell">
+  <aside class="crm-sidebar">
+    <a href="index.html" class="crm-brand">
+      <div class="brand-icon">🐾</div>
+      Veterinaria Rincon
+    </a>
+
+    <nav class="crm-nav">
+      <a href="crm.html"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📅</span> Turnos</a>
+      <a href="clientes.html" class="active"><span>🐾</span> Clientes y Mascotas</a>
+      <a href="farmacia.html"><span>💊</span> Farmacia</a>
+      <a href="#"><span>⚙️</span> Configuracion</a>
+    </nav>
+
+    <a href="login.html" class="crm-logout">← Cerrar sesion</a>
+  </aside>
+
+  <main class="crm-main mascota-main">
+    <header class="crm-topbar">
+      <div>
+        <a href="clientes.html" class="mascota-back">← Volver a clientes y mascotas</a>
+        <h1 id="page-title">Nueva mascota</h1>
+        <p id="page-subtitle">Completa la informacion general para crear la ficha.</p>
+      </div>
+    </header>
+
+    <nav class="mascota-tabs" id="mascota-tabs">
+      <button type="button" class="mascota-tab active" data-tab="general">🐾 Informacion general</button>
+      <button type="button" class="mascota-tab" data-tab="propietario">👤 Propietario</button>
+      <button type="button" class="mascota-tab" data-tab="medica">🩺 Info. medica</button>
+      <button type="button" class="mascota-tab" data-tab="vacunas">💉 Vacunacion</button>
+      <button type="button" class="mascota-tab" data-tab="desparasitaciones">🪱 Desparasitacion</button>
+      <button type="button" class="mascota-tab" data-tab="esterilizacion">✂️ Esterilizacion</button>
+      <button type="button" class="mascota-tab" data-tab="historia">🏥 Historia clinica</button>
+      <button type="button" class="mascota-tab" data-tab="medicaciones">💊 Medicacion</button>
+      <button type="button" class="mascota-tab" data-tab="estudios">🔬 Estudios</button>
+      <button type="button" class="mascota-tab" data-tab="cirugias">🏥 Cirugias</button>
+      <button type="button" class="mascota-tab" data-tab="turnos">📅 Turnos</button>
+      <button type="button" class="mascota-tab" data-tab="documentos">📎 Documentos</button>
+      <button type="button" class="mascota-tab" data-tab="recordatorios">🔔 Recordatorios</button>
+    </nav>
+
+    <div class="mascota-panels">
+
+      <!-- 1. Informacion general -->
+      <section class="mascota-panel active" id="panel-general">
+        <div class="crm-panel">
+          <h3>Informacion general</h3>
+          <form id="general-form" class="stock-form">
+            <label class="login-field photo-field">
+              <span>Foto de la mascota</span>
+              <div class="photo-picker">
+                <div class="photo-preview" id="general-photo-preview">🐾</div>
+                <input type="file" name="foto" accept="image/*" id="general-photo-input">
+              </div>
+            </label>
+
+            <div class="pet-fields-col">
+              <div class="pet-fields-row">
+                <label class="login-field">
+                  <span>Nombre *</span>
+                  <input type="text" name="nombre" required>
+                </label>
+                <label class="login-field">
+                  <span>Especie *</span>
+                  <select name="especie" required>
+                    <option>Perro</option>
+                    <option>Gato</option>
+                    <option>Ave</option>
+                    <option>Conejo</option>
+                    <option>Roedor</option>
+                    <option>Reptil</option>
+                    <option>Otro</option>
+                  </select>
+                </label>
+              </div>
+              <div class="pet-fields-row">
+                <label class="login-field">
+                  <span>Raza</span>
+                  <input type="text" name="raza">
+                </label>
+                <label class="login-field">
+                  <span>Sexo *</span>
+                  <select name="sexo" required>
+                    <option>Macho</option>
+                    <option>Hembra</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <label class="login-field">
+              <span>Fecha de nacimiento</span>
+              <input type="date" name="fechaNacimiento" id="fecha-nacimiento-input">
+            </label>
+            <label class="login-field">
+              <span>Edad (calculada automaticamente)</span>
+              <input type="text" id="edad-display" disabled placeholder="—">
+            </label>
+
+            <label class="login-field">
+              <span>Color</span>
+              <input type="text" name="color">
+            </label>
+            <label class="login-field">
+              <span>Tipo de pelaje</span>
+              <input type="text" name="pelaje">
+            </label>
+
+            <label class="login-field">
+              <span>Tamaño</span>
+              <select name="tamano">
+                <option>Pequeño</option>
+                <option>Mediano</option>
+                <option>Grande</option>
+              </select>
+            </label>
+            <label class="login-field">
+              <span>Estado</span>
+              <select name="estado">
+                <option>Activa</option>
+                <option>Inactiva</option>
+                <option>Fallecida</option>
+              </select>
+            </label>
+
+            <label class="login-field">
+              <span>Peso actual</span>
+              <input type="text" name="pesoActual" placeholder="Ej: 12 kg">
+            </label>
+            <label class="login-field">
+              <span>Peso ideal</span>
+              <input type="text" name="pesoIdeal" placeholder="Ej: 11 kg">
+            </label>
+
+            <label class="login-field">
+              <span>Microchip (numero de identificacion)</span>
+              <input type="text" name="microchip">
+            </label>
+            <label class="login-field">
+              <span>Fecha de alta</span>
+              <input type="date" name="fechaAlta">
+            </label>
+
+            <label class="login-field full-field">
+              <span>Observaciones generales</span>
+              <textarea name="observaciones" rows="3"></textarea>
+            </label>
+
+            <div class="stock-form-actions">
+              <button type="submit" class="btn-hero-primary">Guardar informacion general</button>
+              <span class="saved-hint" id="general-saved-hint" hidden>✓ Guardado</span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 2. Propietario -->
+      <section class="mascota-panel" id="panel-propietario">
+        <div class="crm-panel">
+          <h3>Propietario principal</h3>
+          <p class="panel-hint">Los datos personales vienen de la ficha de cliente, no se duplican aca.</p>
+          <div class="owner-search-row">
+            <input type="text" id="owner-search" list="clientes-datalist" class="search-input" placeholder="Buscar propietario existente...">
+            <datalist id="clientes-datalist"></datalist>
+            <button type="button" class="btn-admin" id="link-owner-btn">Vincular</button>
+            <button type="button" class="btn-hero-primary" id="new-owner-btn">+ Nuevo propietario</button>
+          </div>
+          <div class="owner-card empty" id="owner-card">Sin propietario asignado.</div>
+        </div>
+
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Otros propietarios / contactos asociados</h3>
+            <button type="button" class="btn-admin" data-add-section="contactos">+ Agregar contacto</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Nombre</th><th>Relacion</th><th>Telefono</th><th></th></tr></thead>
+              <tbody id="tbody-contactos"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="crm-panel">
+          <h3>Contacto de emergencia</h3>
+          <form id="emergencia-form" class="stock-form">
+            <label class="login-field"><span>Nombre</span><input type="text" name="nombre"></label>
+            <label class="login-field"><span>Telefono</span><input type="text" name="telefono"></label>
+            <label class="login-field"><span>Relacion</span><input type="text" name="relacion"></label>
+            <div class="stock-form-actions">
+              <button type="submit" class="btn-hero-primary">Guardar contacto de emergencia</button>
+              <span class="saved-hint" id="emergencia-saved-hint" hidden>✓ Guardado</span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 3. Informacion medica -->
+      <section class="mascota-panel" id="panel-medica">
+        <div class="crm-panel">
+          <h3>Informacion medica</h3>
+          <form id="medica-form" class="stock-form">
+            <label class="login-field"><span>Alergias</span><input type="text" name="alergias"></label>
+            <label class="login-field"><span>Alergias alimentarias</span><input type="text" name="alergiasAlimentarias"></label>
+            <label class="login-field"><span>Enfermedades cronicas</span><input type="text" name="enfermedadesCronicas"></label>
+            <label class="login-field"><span>Enfermedades previas</span><input type="text" name="enfermedadesPrevias"></label>
+            <label class="login-field"><span>Medicacion actual</span><input type="text" name="medicacionActual"></label>
+            <label class="login-field"><span>Antecedentes medicos</span><input type="text" name="antecedentesMedicos"></label>
+            <label class="login-field"><span>Antecedentes quirurgicos</span><input type="text" name="antecedentesQuirurgicos"></label>
+            <label class="login-field"><span>Antecedentes hereditarios / geneticos</span><input type="text" name="antecedentesHereditarios"></label>
+            <label class="login-field full-field"><span>Restricciones o cuidados especiales</span><textarea name="restricciones" rows="3"></textarea></label>
+            <label class="login-field full-field"><span>Observaciones medicas importantes</span><textarea name="observaciones" rows="3"></textarea></label>
+            <div class="stock-form-actions">
+              <button type="submit" class="btn-hero-primary">Guardar informacion medica</button>
+              <span class="saved-hint" id="medica-saved-hint" hidden>✓ Guardado</span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Secciones de listas (motor generico) -->
+      <section class="mascota-panel" id="panel-vacunas">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Vacunacion</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="vacunas">+ Agregar vacuna</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Vacuna</th><th>Aplicacion</th><th>Proxima dosis</th><th>Estado</th><th></th></tr></thead>
+              <tbody id="tbody-vacunas"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-desparasitaciones">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Desparasitacion</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="desparasitaciones">+ Agregar desparasitacion</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Tipo</th><th>Producto</th><th>Fecha</th><th>Proxima aplicacion</th><th></th></tr></thead>
+              <tbody id="tbody-desparasitaciones"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Esterilizacion -->
+      <section class="mascota-panel" id="panel-esterilizacion">
+        <div class="crm-panel">
+          <h3>Esterilizacion</h3>
+          <form id="esterilizacion-form" class="stock-form">
+            <label class="login-field">
+              <span>¿Esta esterilizado?</span>
+              <select name="esterilizado">
+                <option>No</option>
+                <option>Si</option>
+              </select>
+            </label>
+            <label class="login-field"><span>Fecha</span><input type="date" name="fecha"></label>
+            <label class="login-field"><span>Tipo de procedimiento</span><input type="text" name="tipoProcedimiento"></label>
+            <label class="login-field"><span>Veterinario</span><input type="text" name="veterinario"></label>
+            <label class="login-field full-field"><span>Observaciones</span><textarea name="observaciones" rows="3"></textarea></label>
+            <label class="login-field full-field"><span>Documentos relacionados</span><input type="file" name="documentos"></label>
+            <div class="stock-form-actions">
+              <button type="submit" class="btn-hero-primary">Guardar esterilizacion</button>
+              <span class="saved-hint" id="esterilizacion-saved-hint" hidden>✓ Guardado</span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-historia">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Historia clinica</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="historia">+ Nueva consulta</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Fecha</th><th>Veterinario</th><th>Motivo</th><th>Diagnostico</th><th></th></tr></thead>
+              <tbody id="tbody-historia"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-medicaciones">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Medicacion y tratamientos</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="medicaciones">+ Agregar medicacion</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Estado</th><th></th></tr></thead>
+              <tbody id="tbody-medicaciones"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-estudios">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Estudios</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="estudios">+ Agregar estudio</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Tipo</th><th>Fecha</th><th>Veterinario</th><th>Resultado</th><th></th></tr></thead>
+              <tbody id="tbody-estudios"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-cirugias">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Cirugias y procedimientos</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="cirugias">+ Agregar procedimiento</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Tipo</th><th>Fecha</th><th>Veterinario</th><th>Resultado</th><th></th></tr></thead>
+              <tbody id="tbody-cirugias"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-turnos">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Turnos</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="turnos">+ Agendar turno</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Fecha</th><th>Hora</th><th>Veterinario</th><th>Motivo</th><th>Estado</th><th></th></tr></thead>
+              <tbody id="tbody-turnos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="mascota-panel" id="panel-documentos">
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Documentos</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="documentos">+ Subir documento</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Nombre</th><th>Categoria</th><th>Fecha</th><th></th></tr></thead>
+              <tbody id="tbody-documentos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. Recordatorios -->
+      <section class="mascota-panel" id="panel-recordatorios">
+        <div class="crm-panel">
+          <h3>Proximos recordatorios</h3>
+          <div class="reminder-list" id="auto-reminders"></div>
+        </div>
+        <div class="crm-panel">
+          <div class="section-panel-head">
+            <h3>Recordatorios personalizados</h3>
+            <button type="button" class="btn-hero-primary" data-add-section="recordatorios">+ Agregar recordatorio</button>
+          </div>
+          <div class="stock-table-wrap">
+            <table class="stock-table">
+              <thead><tr><th>Recordatorio</th><th>Fecha</th><th></th></tr></thead>
+              <tbody id="tbody-recordatorios"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal generico: agregar registro -->
+<div class="modal-overlay" id="record-modal" hidden>
+  <div class="modal-card modal-card-form">
+    <div class="stock-panel-head">
+      <h3 id="record-modal-title">Agregar registro</h3>
+      <button type="button" class="stock-close-btn" id="record-modal-close" aria-label="Cerrar">✕</button>
+    </div>
+    <form id="record-modal-form" class="stock-form">
+      <div class="stock-form" id="record-modal-fields"></div>
+      <div class="stock-form-actions">
+        <button type="submit" class="btn-hero-primary">Guardar</button>
+        <button type="button" class="btn-admin" id="record-modal-cancel">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: nuevo propietario -->
+<div class="modal-overlay" id="new-owner-modal" hidden>
+  <div class="modal-card modal-card-form">
+    <div class="stock-panel-head">
+      <h3>Nuevo propietario</h3>
+      <button type="button" class="stock-close-btn" id="new-owner-close" aria-label="Cerrar">✕</button>
+    </div>
+    <form id="new-owner-form" class="stock-form">
+      <label class="login-field"><span>Nombre *</span><input type="text" name="nombre" required></label>
+      <label class="login-field"><span>Telefono</span><input type="text" name="telefono"></label>
+      <label class="login-field"><span>Email</span><input type="email" name="email"></label>
+      <div class="stock-form-actions">
+        <button type="submit" class="btn-hero-primary">Crear propietario</button>
+        <button type="button" class="btn-admin" id="new-owner-cancel">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: confirmar eliminacion -->
+<div class="modal-overlay" id="delete-modal" hidden>
+  <div class="modal-card">
+    <span class="modal-icon">🗑️</span>
+    <h3>Eliminar registro</h3>
+    <p id="delete-modal-text">¿Seguro que queres eliminar este registro?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-admin" id="delete-cancel-btn">Cancelar</button>
+      <button type="button" class="btn-delete-confirm" id="delete-confirm-btn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/store.js"></script>
+<script>
+  /* ---------- Config de secciones tipo lista ---------- */
+  const LIST_SECTIONS = {
+    contactos: {
+      addLabel: 'Agregar contacto asociado',
+      columns: ['nombre', 'relacion', 'telefono'],
+      fields: [
+        { key: 'nombre', label: 'Nombre', type: 'text', required: true },
+        { key: 'relacion', label: 'Relacion', type: 'text' },
+        { key: 'telefono', label: 'Telefono', type: 'text' },
+      ],
+    },
+    vacunas: {
+      addLabel: 'Agregar vacuna',
+      columns: ['nombre', 'fechaAplicacion', 'proximaDosis', 'estado'],
+      fields: [
+        { key: 'nombre', label: 'Nombre de la vacuna', type: 'text', required: true },
+        { key: 'tipo', label: 'Tipo', type: 'text' },
+        { key: 'fechaAplicacion', label: 'Fecha de aplicacion', type: 'date' },
+        { key: 'proximaDosis', label: 'Proxima dosis', type: 'date' },
+        { key: 'fechaVencimiento', label: 'Fecha de vencimiento', type: 'date' },
+        { key: 'laboratorio', label: 'Laboratorio', type: 'text' },
+        { key: 'lote', label: 'Numero de lote', type: 'text' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'observaciones', label: 'Observaciones', type: 'textarea' },
+        { key: 'certificado', label: 'Adjuntar certificado', type: 'file' },
+      ],
+      computeEstado: function (r) {
+        if (!r.proximaDosis) return { label: '—', cls: '' };
+        const dias = (new Date(r.proximaDosis) - new Date()) / 86400000;
+        if (dias < 0) return { label: '🔴 Vencida', cls: 'out' };
+        if (dias <= 30) return { label: '🟠 Proxima', cls: 'low' };
+        return { label: '🟢 Al dia', cls: 'ok' };
+      },
+    },
+    desparasitaciones: {
+      addLabel: 'Agregar desparasitacion',
+      columns: ['tipo', 'producto', 'fecha', 'proximaAplicacion'],
+      fields: [
+        { key: 'tipo', label: 'Tipo', type: 'select', options: ['Interna', 'Externa'], required: true },
+        { key: 'producto', label: 'Producto', type: 'text' },
+        { key: 'principioActivo', label: 'Principio activo', type: 'text' },
+        { key: 'dosis', label: 'Dosis', type: 'text' },
+        { key: 'fecha', label: 'Fecha', type: 'date' },
+        { key: 'proximaAplicacion', label: 'Proxima aplicacion', type: 'date' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'observaciones', label: 'Observaciones', type: 'textarea' },
+      ],
+    },
+    historia: {
+      addLabel: 'Nueva consulta',
+      columns: ['fecha', 'veterinario', 'motivo', 'diagnostico'],
+      fields: [
+        { key: 'fecha', label: 'Fecha y hora', type: 'datetime-local', required: true },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'motivo', label: 'Motivo', type: 'text' },
+        { key: 'peso', label: 'Peso', type: 'text' },
+        { key: 'temperatura', label: 'Temperatura', type: 'text' },
+        { key: 'fc', label: 'Frecuencia cardiaca', type: 'text' },
+        { key: 'fr', label: 'Frecuencia respiratoria', type: 'text' },
+        { key: 'sintomas', label: 'Sintomas', type: 'textarea' },
+        { key: 'examenFisico', label: 'Examen fisico', type: 'textarea' },
+        { key: 'diagnostico', label: 'Diagnostico', type: 'textarea' },
+        { key: 'tratamiento', label: 'Tratamiento', type: 'textarea' },
+        { key: 'medicacion', label: 'Medicacion', type: 'text' },
+        { key: 'indicaciones', label: 'Indicaciones', type: 'textarea' },
+        { key: 'observaciones', label: 'Observaciones', type: 'textarea' },
+        { key: 'proximoControl', label: 'Proximo control', type: 'date' },
+        { key: 'adjuntos', label: 'Archivos adjuntos', type: 'file' },
+      ],
+    },
+    medicaciones: {
+      addLabel: 'Agregar medicacion',
+      columns: ['medicamento', 'dosis', 'frecuencia', 'estado'],
+      fields: [
+        { key: 'medicamento', label: 'Medicamento', type: 'text', required: true },
+        { key: 'principioActivo', label: 'Principio activo', type: 'text' },
+        { key: 'dosis', label: 'Dosis', type: 'text' },
+        { key: 'frecuencia', label: 'Frecuencia', type: 'text' },
+        { key: 'via', label: 'Via de administracion', type: 'text' },
+        { key: 'fechaInicio', label: 'Fecha de inicio', type: 'date' },
+        { key: 'fechaFin', label: 'Fecha de finalizacion', type: 'date' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'Finalizado', 'Suspendido'] },
+        { key: 'indicaciones', label: 'Indicaciones', type: 'textarea' },
+        { key: 'observaciones', label: 'Observaciones', type: 'textarea' },
+      ],
+    },
+    estudios: {
+      addLabel: 'Agregar estudio',
+      columns: ['tipo', 'fecha', 'veterinario', 'resultado'],
+      fields: [
+        { key: 'tipo', label: 'Tipo de estudio', type: 'select', options: ['Sangre', 'Orina', 'Radiografia', 'Ecografia', 'Ecocardiograma', 'Tomografia', 'Resonancia', 'Biopsia', 'Citologia', 'Otro'], required: true },
+        { key: 'fecha', label: 'Fecha', type: 'date' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'motivo', label: 'Motivo', type: 'text' },
+        { key: 'resultado', label: 'Resultado', type: 'textarea' },
+        { key: 'interpretacion', label: 'Interpretacion', type: 'textarea' },
+        { key: 'observaciones', label: 'Observaciones', type: 'textarea' },
+        { key: 'archivo', label: 'Archivo adjunto', type: 'file' },
+      ],
+    },
+    cirugias: {
+      addLabel: 'Agregar procedimiento',
+      columns: ['tipo', 'fecha', 'veterinario', 'resultado'],
+      fields: [
+        { key: 'tipo', label: 'Tipo', type: 'text', required: true },
+        { key: 'fecha', label: 'Fecha', type: 'date' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'motivo', label: 'Motivo', type: 'text' },
+        { key: 'diagnostico', label: 'Diagnostico', type: 'textarea' },
+        { key: 'procedimiento', label: 'Procedimiento realizado', type: 'textarea' },
+        { key: 'anestesia', label: 'Anestesia', type: 'text' },
+        { key: 'medicacion', label: 'Medicacion', type: 'text' },
+        { key: 'complicaciones', label: 'Complicaciones', type: 'textarea' },
+        { key: 'resultado', label: 'Resultado', type: 'textarea' },
+        { key: 'indicacionesPost', label: 'Indicaciones postoperatorias', type: 'textarea' },
+        { key: 'proximoControl', label: 'Proximo control', type: 'date' },
+        { key: 'documentos', label: 'Documentos', type: 'file' },
+      ],
+    },
+    turnos: {
+      addLabel: 'Agendar turno',
+      columns: ['fecha', 'hora', 'veterinario', 'motivo', 'estado'],
+      fields: [
+        { key: 'fecha', label: 'Fecha', type: 'date', required: true },
+        { key: 'hora', label: 'Hora', type: 'time' },
+        { key: 'veterinario', label: 'Veterinario', type: 'text' },
+        { key: 'motivo', label: 'Motivo', type: 'text' },
+        { key: 'estado', label: 'Estado', type: 'select', options: ['Pendiente', 'Confirmado', 'Realizado', 'Cancelado'] },
+        { key: 'notas', label: 'Notas', type: 'textarea' },
+      ],
+    },
+    documentos: {
+      addLabel: 'Subir documento',
+      columns: ['nombre', 'categoria', 'fecha'],
+      fields: [
+        { key: 'nombre', label: 'Nombre del documento', type: 'text', required: true },
+        { key: 'categoria', label: 'Categoria', type: 'select', options: ['Recetas', 'Certificados', 'Estudios', 'Radiografias', 'Ecografias', 'Historial medico', 'Fotos', 'Otros'] },
+        { key: 'fecha', label: 'Fecha', type: 'date' },
+        { key: 'archivo', label: 'Archivo', type: 'file' },
+      ],
+    },
+    recordatorios: {
+      addLabel: 'Agregar recordatorio',
+      columns: ['texto', 'fecha'],
+      fields: [
+        { key: 'texto', label: 'Recordatorio', type: 'text', required: true },
+        { key: 'fecha', label: 'Fecha', type: 'date' },
+      ],
+    },
+  };
+
+  const LOCKED_UNTIL_SAVED = ['vacunas', 'desparasitaciones', 'esterilizacion', 'historia', 'medicaciones', 'estudios', 'cirugias', 'turnos', 'documentos', 'recordatorios'];
+
+  /* ---------- Estado ---------- */
+  const params = new URLSearchParams(window.location.search);
+  const petId = params.get('id');
+  let currentPet = null;
+
+  if (petId) {
+    currentPet = loadMascotas().find(function (m) { return m.id === petId; }) || null;
+  }
+  if (!currentPet) {
+    currentPet = emptyMascota();
+  }
+
+  function persistPet() {
+    const mascotas = loadMascotas();
+    if (!currentPet.id) {
+      currentPet.id = genId();
+      mascotas.push(currentPet);
+    } else {
+      const idx = mascotas.findIndex(function (m) { return m.id === currentPet.id; });
+      if (idx >= 0) mascotas[idx] = currentPet; else mascotas.push(currentPet);
+    }
+    saveMascotas(mascotas);
+    const url = new URL(window.location.href);
+    url.searchParams.set('id', currentPet.id);
+    window.history.replaceState({}, '', url);
+    updateHeader();
+    updateLockedTabs();
+  }
+
+  function updateHeader() {
+    document.getElementById('page-title').textContent = currentPet.general.nombre || 'Nueva mascota';
+    document.getElementById('page-subtitle').textContent = currentPet.id
+      ? 'Ficha completa de ' + (currentPet.general.nombre || 'la mascota') + '.'
+      : 'Completa la informacion general para crear la ficha.';
+  }
+
+  function updateLockedTabs() {
+    let needsReload = false;
+    LOCKED_UNTIL_SAVED.forEach(function (key) {
+      const tabBtn = document.querySelector('.mascota-tab[data-tab="' + key + '"]');
+      const panel = document.getElementById('panel-' + key);
+      if (!currentPet.id) {
+        tabBtn.classList.add('locked');
+        panel.innerHTML = '<div class="crm-empty">🔒 Guarda la informacion general primero para habilitar esta seccion.</div>';
+      } else if (tabBtn.classList.contains('locked')) {
+        needsReload = true;
+      }
+    });
+    if (needsReload) location.reload();
+  }
+
+  /* ---------- Tabs ---------- */
+  document.getElementById('mascota-tabs').addEventListener('click', function (e) {
+    const btn = e.target.closest('.mascota-tab');
+    if (!btn || btn.classList.contains('locked')) return;
+    document.querySelectorAll('.mascota-tab').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.mascota-panel').forEach(function (p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+
+  /* ---------- 1. Informacion general ---------- */
+  function fillGeneralForm() {
+    const form = document.getElementById('general-form');
+    const g = currentPet.general;
+    form.nombre.value = g.nombre || '';
+    form.especie.value = g.especie || 'Perro';
+    form.raza.value = g.raza || '';
+    form.sexo.value = g.sexo || 'Macho';
+    form.fechaNacimiento.value = g.fechaNacimiento || '';
+    form.color.value = g.color || '';
+    form.pelaje.value = g.pelaje || '';
+    form.tamano.value = g.tamano || 'Mediano';
+    form.estado.value = g.estado || 'Activa';
+    form.pesoActual.value = g.pesoActual || '';
+    form.pesoIdeal.value = g.pesoIdeal || '';
+    form.microchip.value = g.microchip || '';
+    form.fechaAlta.value = g.fechaAlta || '';
+    form.observaciones.value = g.observaciones || '';
+    document.getElementById('edad-display').value = calcularEdad(g.fechaNacimiento) || '—';
+    const preview = document.getElementById('general-photo-preview');
+    preview.innerHTML = g.foto ? '<img src="' + g.foto + '" alt="">' : '🐾';
+  }
+
+  document.getElementById('fecha-nacimiento-input').addEventListener('input', function () {
+    document.getElementById('edad-display').value = calcularEdad(this.value) || '—';
+  });
+
+  document.getElementById('general-photo-input').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function () {
+      document.getElementById('general-photo-preview').innerHTML = '<img src="' + reader.result + '" alt="">';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('general-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const apply = function (fotoDataUrl) {
+      currentPet.general = {
+        nombre: data.get('nombre'),
+        especie: data.get('especie'),
+        raza: data.get('raza'),
+        sexo: data.get('sexo'),
+        fechaNacimiento: data.get('fechaNacimiento'),
+        color: data.get('color'),
+        pelaje: data.get('pelaje'),
+        tamano: data.get('tamano'),
+        estado: data.get('estado'),
+        pesoActual: data.get('pesoActual'),
+        pesoIdeal: data.get('pesoIdeal'),
+        microchip: data.get('microchip'),
+        fechaAlta: data.get('fechaAlta'),
+        observaciones: data.get('observaciones'),
+        foto: fotoDataUrl !== undefined ? fotoDataUrl : (currentPet.general.foto || ''),
+      };
+      persistPet();
+      showSavedHint('general-saved-hint');
+    };
+    const fotoFile = document.getElementById('general-photo-input').files[0];
+    if (fotoFile) {
+      const reader = new FileReader();
+      reader.onload = function () { apply(reader.result); };
+      reader.readAsDataURL(fotoFile);
+    } else {
+      apply(undefined);
+    }
+  });
+
+  function showSavedHint(id) {
+    const hint = document.getElementById(id);
+    hint.hidden = false;
+    setTimeout(function () { hint.hidden = true; }, 2000);
+  }
+
+  /* ---------- 2. Propietario ---------- */
+  function renderClientesDatalist() {
+    const datalist = document.getElementById('clientes-datalist');
+    datalist.innerHTML = loadClientes().map(function (c) {
+      return '<option value="' + c.nombre + '">';
+    }).join('');
+  }
+
+  function renderOwnerCard() {
+    const card = document.getElementById('owner-card');
+    const cliente = currentPet.clienteId ? loadClientes().find(function (c) { return c.id === currentPet.clienteId; }) : null;
+    if (!cliente) {
+      card.className = 'owner-card empty';
+      card.innerHTML = 'Sin propietario asignado.';
+      return;
+    }
+    card.className = 'owner-card';
+    card.innerHTML =
+      '<div class="client-avatar">' + initialsOf(cliente.nombre) + '</div>' +
+      '<div><h4>' + cliente.nombre + '</h4><p>' + (cliente.telefono || '—') + ' · ' + (cliente.email || '—') + '</p></div>';
+  }
+
+  document.getElementById('link-owner-btn').addEventListener('click', function () {
+    const term = document.getElementById('owner-search').value.trim().toLowerCase();
+    if (!term) return;
+    const cliente = loadClientes().find(function (c) { return c.nombre.toLowerCase() === term; });
+    if (!cliente) {
+      alert('No se encontro un propietario con ese nombre. Usa "+ Nuevo propietario" para crearlo.');
+      return;
+    }
+    currentPet.clienteId = cliente.id;
+    persistPet();
+    renderOwnerCard();
+  });
+
+  const newOwnerModal = document.getElementById('new-owner-modal');
+  document.getElementById('new-owner-btn').addEventListener('click', function () { newOwnerModal.hidden = false; });
+  function closeNewOwnerModal() { newOwnerModal.hidden = true; document.getElementById('new-owner-form').reset(); }
+  document.getElementById('new-owner-close').addEventListener('click', closeNewOwnerModal);
+  document.getElementById('new-owner-cancel').addEventListener('click', closeNewOwnerModal);
+  newOwnerModal.addEventListener('click', function (e) { if (e.target === newOwnerModal) closeNewOwnerModal(); });
+
+  document.getElementById('new-owner-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const clientes = loadClientes();
+    const nuevo = { id: genId(), nombre: data.get('nombre'), telefono: data.get('telefono'), email: data.get('email') };
+    clientes.push(nuevo);
+    saveClientes(clientes);
+    currentPet.clienteId = nuevo.id;
+    persistPet();
+    renderClientesDatalist();
+    renderOwnerCard();
+    closeNewOwnerModal();
+  });
+
+  document.getElementById('emergencia-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    currentPet.contactoEmergencia = { nombre: data.get('nombre'), telefono: data.get('telefono'), relacion: data.get('relacion') };
+    persistPet();
+    showSavedHint('emergencia-saved-hint');
+  });
+
+  function fillEmergenciaForm() {
+    const form = document.getElementById('emergencia-form');
+    const c = currentPet.contactoEmergencia || {};
+    form.nombre.value = c.nombre || '';
+    form.telefono.value = c.telefono || '';
+    form.relacion.value = c.relacion || '';
+  }
+
+  /* ---------- 3. Informacion medica ---------- */
+  function fillMedicaForm() {
+    const form = document.getElementById('medica-form');
+    const m = currentPet.medica || {};
+    Object.keys(m).forEach(function (key) {
+      if (form[key]) form[key].value = m[key] || '';
+    });
+  }
+
+  document.getElementById('medica-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    currentPet.medica = {
+      alergias: data.get('alergias'), alergiasAlimentarias: data.get('alergiasAlimentarias'),
+      enfermedadesCronicas: data.get('enfermedadesCronicas'), enfermedadesPrevias: data.get('enfermedadesPrevias'),
+      medicacionActual: data.get('medicacionActual'), antecedentesMedicos: data.get('antecedentesMedicos'),
+      antecedentesQuirurgicos: data.get('antecedentesQuirurgicos'), antecedentesHereditarios: data.get('antecedentesHereditarios'),
+      restricciones: data.get('restricciones'), observaciones: data.get('observaciones'),
+    };
+    persistPet();
+    showSavedHint('medica-saved-hint');
+  });
+
+  /* ---------- 6. Esterilizacion ---------- */
+  function fillEsterilizacionForm() {
+    const form = document.getElementById('esterilizacion-form');
+    const es = currentPet.esterilizacion || {};
+    form.esterilizado.value = es.esterilizado || 'No';
+    form.fecha.value = es.fecha || '';
+    form.tipoProcedimiento.value = es.tipoProcedimiento || '';
+    form.veterinario.value = es.veterinario || '';
+    form.observaciones.value = es.observaciones || '';
+  }
+
+  document.getElementById('esterilizacion-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const apply = function (docDataUrl) {
+      currentPet.esterilizacion = {
+        esterilizado: data.get('esterilizado'), fecha: data.get('fecha'),
+        tipoProcedimiento: data.get('tipoProcedimiento'), veterinario: data.get('veterinario'),
+        observaciones: data.get('observaciones'),
+        documentos: docDataUrl !== undefined ? docDataUrl : (currentPet.esterilizacion.documentos || ''),
+      };
+      persistPet();
+      showSavedHint('esterilizacion-saved-hint');
+    };
+    const file = form.documentos.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function () { apply(reader.result); };
+      reader.readAsDataURL(file);
+    } else {
+      apply(undefined);
+    }
+  });
+
+  /* ---------- Motor generico de listas ---------- */
+  let currentSectionKey = null;
+
+  function renderListTable(key) {
+    const config = LIST_SECTIONS[key];
+    const tbody = document.getElementById('tbody-' + key);
+    if (!tbody) return;
+    const records = currentPet[key] || [];
+    if (records.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="' + (config.columns.length + 1) + '" class="stock-empty-row">Todavia no hay registros.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = records.map(function (r, i) {
+      const cells = config.columns.map(function (col) {
+        if (col === 'estado' && config.computeEstado) {
+          const e = config.computeEstado(r);
+          return '<td>' + (e.label === '—' ? '—' : '<span class="stock-badge ' + e.cls + '">' + e.label + '</span>') + '</td>';
+        }
+        return '<td>' + (r[col] ? r[col] : '—') + '</td>';
+      }).join('');
+      return '<tr>' + cells + '<td><button type="button" class="stock-delete-btn" data-section="' + key + '" data-index="' + i + '" aria-label="Eliminar">🗑️</button></td></tr>';
+    }).join('');
+  }
+
+  function renderAllLists() {
+    Object.keys(LIST_SECTIONS).forEach(renderListTable);
+  }
+
+  document.querySelectorAll('[data-add-section]').forEach(function (btn) {
+    btn.addEventListener('click', function () { openRecordModal(btn.dataset.addSection); });
+  });
+
+  const recordModal = document.getElementById('record-modal');
+  function openRecordModal(key) {
+    currentSectionKey = key;
+    const config = LIST_SECTIONS[key];
+    document.getElementById('record-modal-title').textContent = config.addLabel;
+    const container = document.getElementById('record-modal-fields');
+    container.innerHTML = '';
+    config.fields.forEach(function (f) {
+      const wrap = document.createElement('label');
+      wrap.className = 'login-field';
+      let inputHtml;
+      if (f.type === 'textarea') {
+        inputHtml = '<textarea name="' + f.key + '" rows="3"' + (f.required ? ' required' : '') + '></textarea>';
+      } else if (f.type === 'select') {
+        inputHtml = '<select name="' + f.key + '">' + f.options.map(function (o) { return '<option value="' + o + '">' + o + '</option>'; }).join('') + '</select>';
+      } else if (f.type === 'file') {
+        inputHtml = '<input type="file" name="' + f.key + '">';
+      } else {
+        inputHtml = '<input type="' + f.type + '" name="' + f.key + '"' + (f.required ? ' required' : '') + '>';
+      }
+      wrap.innerHTML = '<span>' + f.label + (f.required ? ' *' : '') + '</span>' + inputHtml;
+      container.appendChild(wrap);
+    });
+    document.getElementById('record-modal-form').reset();
+    recordModal.hidden = false;
+  }
+
+  function closeRecordModal() { recordModal.hidden = true; currentSectionKey = null; }
+  document.getElementById('record-modal-close').addEventListener('click', closeRecordModal);
+  document.getElementById('record-modal-cancel').addEventListener('click', closeRecordModal);
+  recordModal.addEventListener('click', function (e) { if (e.target === recordModal) closeRecordModal(); });
+
+  document.getElementById('record-modal-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const config = LIST_SECTIONS[currentSectionKey];
+    const data = new FormData(e.target);
+    const record = {};
+    const filePromises = [];
+    config.fields.forEach(function (f) {
+      if (f.type === 'file') {
+        const file = data.get(f.key);
+        if (file && file.size > 0) {
+          filePromises.push(new Promise(function (resolve) {
+            const reader = new FileReader();
+            reader.onload = function () { record[f.key] = reader.result; resolve(); };
+            reader.readAsDataURL(file);
+          }));
+        } else {
+          record[f.key] = '';
+        }
+      } else {
+        record[f.key] = data.get(f.key) || '';
+      }
+    });
+    Promise.all(filePromises).then(function () {
+      if (!currentPet[currentSectionKey]) currentPet[currentSectionKey] = [];
+      currentPet[currentSectionKey].push(record);
+      persistPet();
+      renderListTable(currentSectionKey);
+      renderReminders();
+      closeRecordModal();
+    });
+  });
+
+  const deleteModal = document.getElementById('delete-modal');
+  const deleteModalText = document.getElementById('delete-modal-text');
+  let pendingDelete = null;
+
+  document.querySelector('.mascota-panels').addEventListener('click', function (e) {
+    const btn = e.target.closest('.stock-delete-btn');
+    if (!btn) return;
+    pendingDelete = { section: btn.dataset.section, index: Number(btn.dataset.index) };
+    deleteModalText.textContent = '¿Seguro que queres eliminar este registro?';
+    deleteModal.hidden = false;
+  });
+
+  function closeDeleteModal() { deleteModal.hidden = true; pendingDelete = null; }
+  document.getElementById('delete-cancel-btn').addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function (e) { if (e.target === deleteModal) closeDeleteModal(); });
+  document.getElementById('delete-confirm-btn').addEventListener('click', function () {
+    if (!pendingDelete) return;
+    currentPet[pendingDelete.section].splice(pendingDelete.index, 1);
+    persistPet();
+    renderListTable(pendingDelete.section);
+    renderReminders();
+    closeDeleteModal();
+  });
+
+  /* ---------- 13. Recordatorios automaticos ---------- */
+  function renderReminders() {
+    const container = document.getElementById('auto-reminders');
+    if (!container) return;
+    const items = [];
+
+    (currentPet.vacunas || []).forEach(function (v) {
+      if (v.proximaDosis) items.push({ icon: '💉', texto: 'Proxima vacuna: ' + v.nombre, fecha: v.proximaDosis });
+    });
+    (currentPet.desparasitaciones || []).forEach(function (d) {
+      if (d.proximaAplicacion) items.push({ icon: '🪱', texto: 'Proxima desparasitacion' + (d.producto ? ' (' + d.producto + ')' : ''), fecha: d.proximaAplicacion });
+    });
+    (currentPet.historia || []).forEach(function (h) {
+      if (h.proximoControl) items.push({ icon: '🏥', texto: 'Proximo control clinico', fecha: h.proximoControl });
+    });
+    (currentPet.medicaciones || []).forEach(function (m) {
+      if (m.fechaFin && m.estado === 'Activo') items.push({ icon: '💊', texto: 'Fin de tratamiento: ' + m.medicamento, fecha: m.fechaFin });
+    });
+    (currentPet.cirugias || []).forEach(function (c) {
+      if (c.proximoControl) items.push({ icon: '✂️', texto: 'Control postoperatorio' + (c.tipo ? ' (' + c.tipo + ')' : ''), fecha: c.proximoControl });
+    });
+    (currentPet.turnos || []).forEach(function (t) {
+      if (t.fecha) items.push({ icon: '📅', texto: 'Turno' + (t.motivo ? ': ' + t.motivo : ''), fecha: t.fecha });
+    });
+    (currentPet.recordatorios || []).forEach(function (r) {
+      items.push({ icon: '🔔', texto: r.texto, fecha: r.fecha });
+    });
+
+    items.sort(function (a, b) { return new Date(a.fecha || 0) - new Date(b.fecha || 0); });
+
+    if (items.length === 0) {
+      container.innerHTML = '<div class="crm-empty">No hay recordatorios proximos.</div>';
+      return;
+    }
+
+    const hoy = new Date();
+    container.innerHTML = items.map(function (it) {
+      const vencido = it.fecha && new Date(it.fecha) < hoy;
+      return (
+        '<div class="reminder-item' + (vencido ? ' overdue' : '') + '">' +
+          '<span class="reminder-icon">' + it.icon + '</span>' +
+          '<span class="reminder-text">' + it.texto + '</span>' +
+          '<span class="reminder-date">' + (it.fecha || '—') + '</span>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  /* ---------- Init ---------- */
+  fillGeneralForm();
+  fillEmergenciaForm();
+  fillMedicaForm();
+  fillEsterilizacionForm();
+  renderClientesDatalist();
+  renderOwnerCard();
+  renderAllLists();
+  renderReminders();
+  updateHeader();
+  updateLockedTabs();
+</script>
+
+</body>
+</html>

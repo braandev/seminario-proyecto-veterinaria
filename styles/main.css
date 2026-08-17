@@ -612,6 +612,16 @@ body.landing {
   font-size: 14px;
 }
 
+.section-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--l-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin: 30px 0 14px;
+}
+.section-title:first-of-type { margin-top: 0; }
+
 .crm-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -741,6 +751,266 @@ body.landing {
   transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
 .stock-delete-btn:hover { background: #fbe0e0; border-color: #f3b7b7; transform: translateY(-1px); }
+
+/* ---------- Modal de confirmacion ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28,19,41,.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+}
+.modal-overlay[hidden] { display: none; }
+
+.modal-card {
+  width: 100%;
+  max-width: 340px;
+  background: white;
+  border: 1px solid var(--l-border);
+  border-radius: var(--l-radius);
+  padding: 30px 26px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(28,19,41,.3);
+}
+
+.modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: #fbe0e0;
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+
+.modal-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 900; }
+.modal-card p { margin: 0 0 24px; font-size: 13.5px; color: var(--l-text-muted); }
+
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+.modal-actions .btn-admin { flex: 1; }
+
+.btn-delete-confirm {
+  flex: 1;
+  padding: 11px 18px;
+  background: #d33d3d;
+  color: white;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.btn-delete-confirm:hover { background: #b52e2e; }
+
+/* ---------- Clientes y mascotas ---------- */
+.search-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--l-border);
+  background: var(--l-bg);
+  color: var(--l-text);
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.search-input::placeholder { color: #b0a5c9; font-weight: 400; }
+.search-input:focus { border-color: var(--l-accent); box-shadow: 0 0 0 3px var(--l-accent-soft); }
+
+.pet-fields-col { display: flex; flex-direction: column; gap: 16px; }
+.pet-fields-row { display: flex; gap: 16px; }
+.pet-fields-row .login-field { flex: 1; }
+
+.photo-field { align-items: flex-start; }
+.photo-picker { display: flex; align-items: center; gap: 14px; }
+.photo-preview {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #ede4fc, var(--l-accent-soft));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.client-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+.client-group {
+  background: white;
+  border: 1px solid var(--l-border);
+  border-radius: var(--l-radius);
+  padding: 22px;
+}
+
+.client-group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.client-group-info { flex: 1; }
+.client-delete-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--l-border);
+  background: white;
+  font-size: 13px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.client-delete-btn:hover { background: #fbe0e0; border-color: #f3b7b7; transform: translateY(-1px); }
+.client-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--l-accent-soft);
+  color: var(--l-accent-2);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.client-group-head h4 { margin: 0 0 2px; font-size: 15px; font-weight: 800; }
+.client-group-head .count { font-size: 12px; color: var(--l-text-muted); font-weight: 600; }
+
+.pet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.pet-card {
+  background: var(--l-cream);
+  border-radius: var(--l-radius-sm);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.pet-photo {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #c9aef7, var(--l-accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  overflow: hidden;
+}
+.pet-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.pet-name { font-weight: 800; font-size: 13.5px; }
+.pet-meta { font-size: 11.5px; color: var(--l-text-muted); }
+a.pet-card { transition: transform .2s ease, box-shadow .2s ease; }
+a.pet-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(28,19,41,.1); }
+
+/* ---------- Ficha de mascota ---------- */
+.mascota-back {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--l-text-muted);
+  margin-bottom: 8px;
+}
+.mascota-back:hover { color: var(--l-accent-2); }
+
+.mascota-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 6px;
+  padding-bottom: 10px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--l-border);
+}
+.mascota-tab {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--l-text-muted);
+  white-space: nowrap;
+}
+.mascota-tab:hover { background: var(--l-cream); color: var(--l-text); }
+.mascota-tab.active { background: var(--l-dark); color: white; }
+.mascota-tab.locked { opacity: .45; cursor: not-allowed; }
+
+.mascota-panels { display: block; }
+.mascota-panel { display: none; flex-direction: column; gap: 20px; }
+.mascota-panel.active { display: flex; }
+.mascota-panel .crm-panel { margin-bottom: 0; }
+
+.section-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.section-panel-head h3 { margin: 0; }
+
+.panel-hint { font-size: 12.5px; color: var(--l-text-muted); margin: -6px 0 16px; }
+
+.full-field { grid-column: 1 / -1; }
+
+.saved-hint { font-size: 12.5px; font-weight: 700; color: #1c9a53; }
+
+.stock-empty-row { text-align: center; color: var(--l-text-muted); font-size: 13px; padding: 22px 10px !important; }
+
+.owner-search-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.owner-search-row .search-input { flex: 1; min-width: 180px; }
+
+.owner-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--l-cream);
+  border-radius: var(--l-radius-sm);
+  padding: 14px 16px;
+  font-size: 13.5px;
+}
+.owner-card.empty { color: var(--l-text-muted); font-weight: 600; }
+.owner-card h4 { margin: 0 0 2px; font-size: 14px; font-weight: 800; }
+.owner-card p { margin: 0; font-size: 12.5px; color: var(--l-text-muted); }
+
+.reminder-list { display: flex; flex-direction: column; gap: 10px; }
+.reminder-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--l-cream);
+  border-radius: var(--l-radius-sm);
+  padding: 12px 16px;
+  font-size: 13.5px;
+}
+.reminder-item.overdue { background: #fbe0e0; }
+.reminder-icon { font-size: 16px; }
+.reminder-text { flex: 1; font-weight: 600; }
+.reminder-date { font-size: 12px; color: var(--l-text-muted); font-weight: 700; }
+.reminder-item.overdue .reminder-date { color: #d33d3d; }
+
+.modal-card-form {
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: left;
+}
+.modal-card-form .stock-form-actions { justify-content: flex-start; }
+#record-modal-fields { grid-column: 1 / -1; }
 
 /* ---------- Footer ---------- */
 .landing-footer {

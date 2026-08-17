@@ -18,8 +18,7 @@
     <nav class="crm-nav">
       <a href="crm.html"><span>📊</span> Dashboard</a>
       <a href="#"><span>📅</span> Turnos</a>
-      <a href="#"><span>🐾</span> Mascotas</a>
-      <a href="#"><span>👤</span> Clientes</a>
+      <a href="clientes.html"><span>🐾</span> Clientes y Mascotas</a>
       <a href="farmacia.html" class="active"><span>💊</span> Farmacia</a>
       <a href="#"><span>⚙️</span> Configuracion</a>
     </nav>
@@ -103,6 +102,18 @@
       </div>
     </section>
   </main>
+</div>
+
+<div class="modal-overlay" id="delete-modal" hidden>
+  <div class="modal-card">
+    <span class="modal-icon">🗑️</span>
+    <h3>Eliminar producto</h3>
+    <p id="delete-modal-text">¿Seguro que queres eliminar este producto del inventario?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-admin" id="delete-cancel-btn">Cancelar</button>
+      <button type="button" class="btn-delete-confirm" id="delete-confirm-btn">Eliminar</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -194,15 +205,38 @@
     render();
   });
 
+  const deleteModal = document.getElementById('delete-modal');
+  const deleteModalText = document.getElementById('delete-modal-text');
+  const deleteCancelBtn = document.getElementById('delete-cancel-btn');
+  const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+  let pendingDeleteIndex = null;
+
+  function closeDeleteModal() {
+    deleteModal.hidden = true;
+    pendingDeleteIndex = null;
+  }
+
   document.getElementById('stock-tbody').addEventListener('click', function (e) {
     const btn = e.target.closest('.stock-delete-btn');
     if (!btn) return;
     const index = Number(btn.dataset.index);
+    const producto = loadProducts()[index];
+    pendingDeleteIndex = index;
+    deleteModalText.textContent = '¿Seguro que queres eliminar "' + producto.nombre + '" del inventario?';
+    deleteModal.hidden = false;
+  });
+
+  deleteCancelBtn.addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function (e) {
+    if (e.target === deleteModal) closeDeleteModal();
+  });
+
+  deleteConfirmBtn.addEventListener('click', function () {
+    if (pendingDeleteIndex === null) return;
     const products = loadProducts();
-    const producto = products[index];
-    if (!confirm('Seguro que queres eliminar "' + producto.nombre + '" del inventario?')) return;
-    products.splice(index, 1);
+    products.splice(pendingDeleteIndex, 1);
     saveProducts(products);
+    closeDeleteModal();
     render();
   });
 
