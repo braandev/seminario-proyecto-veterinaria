@@ -17,9 +17,9 @@
 
     <nav class="crm-nav">
       <a href="crm.html" class="active"><span>📊</span> Dashboard</a>
-      <a href="#"><span>📅</span> Turnos</a>
+      <a href="turnos.html"><span>📅</span> Turnos</a>
       <a href="clientes.html"><span>🐾</span> Clientes y Mascotas</a>
-      <a href="farmacia.html"><span>💊</span> Farmacia</a>
+      <a href="farmacia.html"><span>💊</span> Farmacia y productos</a>
       <a href="#"><span>⚙️</span> Configuracion</a>
     </nav>
 
@@ -40,7 +40,7 @@
 
     <section class="crm-stats">
       <div class="crm-stat">
-        <span class="crm-stat-num">128</span>
+        <span class="crm-stat-num" id="stat-turnos-mes">0</span>
         <span class="crm-stat-label">Turnos este mes</span>
       </div>
       <div class="crm-stat">
@@ -48,7 +48,7 @@
         <span class="crm-stat-label">Mascotas registradas</span>
       </div>
       <div class="crm-stat">
-        <span class="crm-stat-num">19</span>
+        <span class="crm-stat-num" id="stat-turnos-hoy">0</span>
         <span class="crm-stat-label">Turnos hoy</span>
       </div>
       <div class="crm-stat">
@@ -60,7 +60,7 @@
     <section class="crm-panels">
       <div class="crm-panel">
         <h3>Proximos turnos</h3>
-        <div class="crm-empty">Todavia no hay turnos cargados en el sistema.</div>
+        <div class="reminder-list" id="dash-turnos"></div>
       </div>
       <div class="crm-panel">
         <h3>Ultimas mascotas atendidas</h3>
@@ -69,6 +69,40 @@
     </section>
   </main>
 </div>
+
+<script src="scripts/turnos.js"></script>
+<script>
+  const MESES_CORTOS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  const turnos = loadTurnosPublicos().slice().sort(function (a, b) {
+    return (a.fecha + ' ' + a.hora).localeCompare(b.fecha + ' ' + b.hora);
+  });
+
+  const hoyStr = dateToStr(new Date());
+  const mesActualStr = hoyStr.slice(0, 7);
+
+  const dashTurnos = document.getElementById('dash-turnos');
+  const proximos = turnos.filter(function (t) { return t.fecha >= hoyStr; }).slice(0, 6);
+
+  if (proximos.length === 0) {
+    dashTurnos.innerHTML = '<div class="crm-empty">Todavia no hay turnos cargados en el sistema.</div>';
+  } else {
+    dashTurnos.innerHTML = proximos.map(function (t) {
+      const d = strToDate(t.fecha);
+      const fecha = d.getDate() + ' ' + MESES_CORTOS[d.getMonth()];
+      return (
+        '<a href="turnos.html" class="reminder-item">' +
+          '<span class="reminder-icon">📅</span>' +
+          '<span class="reminder-text">' + t.nombre + ' — ' + t.mascota + (t.motivo ? ' (' + t.motivo + ')' : '') + '</span>' +
+          '<span class="reminder-date">' + fecha + ' · ' + t.hora + '</span>' +
+        '</a>'
+      );
+    }).join('');
+  }
+
+  document.getElementById('stat-turnos-hoy').textContent = turnos.filter(function (t) { return t.fecha === hoyStr; }).length;
+  document.getElementById('stat-turnos-mes').textContent = turnos.filter(function (t) { return t.fecha.slice(0, 7) === mesActualStr; }).length;
+</script>
 
 </body>
 </html>

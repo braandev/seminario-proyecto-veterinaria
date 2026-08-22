@@ -18,6 +18,7 @@
     <nav class="landing-nav">
       <a href="#inicio">Inicio</a>
       <a href="#servicios">Servicios</a>
+      <a href="#turnos">Turnos</a>
       <a href="#horarios">Horarios</a>
     </nav>
     <div class="nav-actions">
@@ -32,12 +33,12 @@
     <span class="hero-eyebrow">🐾 Rincon de Milberg · Tigre</span>
     <h1>Cuidado mas alla<br>de cada <span class="accent">huella</span></h1>
     <p>
-      Mas de 10 años de trayectoria cuidando la salud de las mascotas de
-      Rincon de Milberg, con atencion personalizada y un equipo veterinario
+      Mas de 10 años de trayectoría cuidando la salud de las mascotas de
+      Rincón de Milberg, con atención personalizada y un equipo veterinarío
       de confianza en cada consulta.
     </p>
     <div class="hero-actions">
-      <a href="#horarios"><button class="btn-hero-primary">Empezar ahora</button></a>
+      <a href="#turnos"><button class="btn-hero-primary">Reservar turno</button></a>
       <span class="hero-scroll-hint">Llama y consulta turnos o productos ↓</span>
     </div>
     </div>
@@ -46,10 +47,6 @@
   <div class="hero-visual">
     <div class="visual-block visual-main">
       <img src="images/foto1.jpg" alt="">
-      <div class="floating-chip">
-        <span class="avatars"><span>🐱</span><span>🐕</span><span>🐇</span></span>
-        Miembros felices unidos
-      </div>
     </div>
     <div class="visual-block visual-sub"><img src="images/foto2.webp" alt=""></div>
   </div>
@@ -65,24 +62,109 @@
     <div class="service-card">
       <div class="service-photo"><img src="images/bienestar animal.jpg" alt=""></div>
       <h3>Cuidado general y bienestar</h3>
-      <p>Consultas clinicas, diagnostico, controles periodicos y prevencion con nuestro equipo de veterinarios.</p>
-      <a class="service-learn" href="#horarios">Reservar turno →</a>
+      <p>Consultas clinicas, diagnostico, controles periodicos y prevención con nuestro equipo de veterinarios.</p>
+      <a class="service-learn" href="#turnos">Reservar turno →</a>
     </div>
     <div class="service-card">
       <div class="service-photo"><img src="images/vacunand perro.jpg" alt=""></div>
-      <h3>Vacunacion y tratamientos</h3>
-      <p>Cartilla de vacunacion al dia, tratamientos personalizados y seguimiento de la evolucion de tu mascota.</p>
-      <a class="service-learn" href="#horarios">Reservar turno →</a>
+      <h3>Vacunación y tratamientos</h3>
+      <p>Cartilla de vacunación al dia, tratamientos personalizados y seguimiento de la evolución de tu mascota.</p>
+      <a class="service-learn" href="#turnos">Reservar turno →</a>
     </div>
     <div class="service-card">
       <div class="service-photo"><img src="images/productos.jpg" alt=""></div>
-      <h3>Farmacia y accesorios</h3>
+      <h3>Farmacía y accesorios</h3>
       <p>Medicamentos, alimentos balanceados y accesorios recomendados por nuestros profesionales.</p>
       <a class="service-learn" href="#horarios">Ver mas →</a>
     </div>
   </div>
 </section>
 
+
+<!-- ============ RESERVA DE TURNOS ============ -->
+<section class="section" id="turnos">
+  <div class="section-heading">
+    <span class="section-eyebrow">Reserva online</span>
+    <h2>Reserva tu turno</h2>
+  </div>
+
+  <div class="booking-wrap">
+    <div class="booking-calendar">
+      <div class="calendar-head">
+        <button type="button" class="cal-nav" id="cal-prev" aria-label="Mes anterior">←</button>
+        <span class="cal-month-label" id="cal-month-label"></span>
+        <button type="button" class="cal-nav" id="cal-next" aria-label="Mes siguiente">→</button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+      <div class="calendar-grid" id="cal-grid"></div>
+      <div class="calendar-legend">
+        <span><i class="cal-dot open"></i>Disponible</span>
+        <span><i class="cal-dot closed"></i>Cerrado</span>
+        <span><i class="cal-dot selected"></i>Seleccionado</span>
+      </div>
+    </div>
+
+    <div class="booking-panel">
+      <div id="booking-slots-block">
+        <h3 id="booking-date-label">Elegí una fecha</h3>
+        <div class="slots-grid" id="slots-grid">
+          <p class="slots-empty">Seleccioná un dia disponible en el calendario para ver los horarios.</p>
+        </div>
+      </div>
+
+      <form id="booking-form" class="booking-form" hidden>
+        <div class="login-field full-field">
+          <label>Turno seleccionado</label>
+          <div class="booking-summary" id="booking-summary"></div>
+        </div>
+        <div class="login-field">
+          <label for="b-nombre">Nombre y apellido</label>
+          <input type="text" id="b-nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="login-field">
+          <label for="b-numero">Telefono</label>
+          <div class="phone-group">
+            <select id="b-pais" class="phone-country">
+              <option value="+54" selected>🇦🇷 +54</option>
+              <option value="+598">🇺🇾 +598</option>
+              <option value="+595">🇵🇾 +595</option>
+              <option value="+56">🇨🇱 +56</option>
+              <option value="+55">🇧🇷 +55</option>
+            </select>
+            <input type="tel" id="b-numero" class="phone-number" placeholder="11 1234-5678" inputmode="numeric" required>
+          </div>
+        </div>
+        <div class="login-field">
+          <label for="b-mascota">Nombre de tu mascota</label>
+          <input type="text" id="b-mascota" placeholder="Ej: Firulais" required>
+        </div>
+        <div class="login-field full-field">
+          <label for="b-motivo">Motivo de la consulta</label>
+          <select id="b-motivo">
+            <option>Consulta general</option>
+            <option>Vacunación</option>
+            <option>Control</option>
+            <option>Urgencia</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="stock-form-actions">
+          <button type="submit" class="btn-hero-primary">Confirmar turno</button>
+          <button type="button" class="btn-admin" id="booking-cancel">Cancelar</button>
+        </div>
+      </form>
+
+      <div class="booking-success" id="booking-success" hidden>
+        <div class="modal-icon" style="background:#e2f6ea">✅</div>
+        <h3>Turno reservado</h3>
+        <p id="booking-success-text"></p>
+        <button type="button" class="btn-admin" id="booking-new">Reservar otro turno</button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ HORARIOS Y CONTACTO ============ -->
 <section class="section" id="horarios">
@@ -93,11 +175,11 @@
   <div class="info-grid">
     <div class="info-block">
       <h3>Horarios de atencion</h3>
-      <div class="horario-row"><span class="dia">Lunes a viernes</span><span class="hora">9:00 hs a 20:00 hs</span></div>
-      <div class="horario-row"><span class="dia">Sabados</span><span class="hora">9:00 hs a 14:00 hs</span></div>
+      <div class="horario-row"><span class="dia">Lunes a viernes</span><span class="hora">9:00 hs a  12:00 hs - 16:00 hs a 19:00 hs</span></div>
+      <div class="horario-row"><span class="dia">Sábados</span><span class="hora">10:00 hs a 13:00 hs</span></div>
       <div class="horario-row"><span class="dia">Domingos y feriados</span><span class="hora">Cerrado</span></div>
       <p style="margin-top:18px;color:var(--l-text-muted);font-size:14px">
-        Estamos para acompanar la salud y el bienestar de tu mascota cuando
+        Estamos para acompañar la salud y el bienestar de tu mascota cuando
         mas lo necesites. Consulta nuestros horarios y reserva tu turno de
         manera rapida y sencilla.
       </p>
@@ -106,11 +188,11 @@
       <h3>Contacto</h3>
       <div class="contact-item">
         <span class="icon">📍</span>
-        <div><span class="label">Direccion</span>Av. Santa Maria de las Conchas 2405, Rincon de Milberg, Tigre</div>
+        <div><span class="label">Dirección</span>Av. Santa Maria de las Conchas 2405, Rincon de Milberg, Tigre</div>
       </div>
       <div class="contact-item">
         <span class="icon">📞</span>
-        <div><span class="label">Telefono</span>15 4325-7843</div>
+        <div><span class="label">Telefóno</span>011 4731-763</div>
       </div>
       <div class="contact-item">
         <span class="icon">✉️</span>
@@ -126,7 +208,7 @@
     <div>
       <div class="footer-brand"><span class="brand-icon">🐾</span>Veterinaria Rincon</div>
       <p style="font-size:13px;max-width:260px">
-        Atencion medica, prevencion y bienestar para tu mascota, con un
+        Atención médica, prevención y bienestar para tu mascota, con un
         trato humano en cada consulta.
       </p>
     </div>
@@ -139,12 +221,13 @@
     <div class="footer-col">
       <h4>Contacto</h4>
       <a href="mailto:veterinariarincon@gmail.com">veterinariarincon@gmail.com</a>
-      <a href="tel:1543257843">Tel. 15 4325-7843</a>
-      <a href="#horarios">Av. Santa Maria de las Conchas, Rincon de Milberg</a>
+      <a href="tel:1543257843">Tel. 011 4731-763</a>
+      <a href="#horarios">Av. Santa Maria de las Conchas, Rincón de Milberg</a>
     </div>
   </div>
-  <div class="footer-bottom">Todos los derechos reservados 2026 - Veterinaria Rincon</div>
+  <div class="footer-bottom">Todos los derechos reservados 2026 - Veterinaria Rincón</div>
 </footer>
 
+<script src="scripts/turnos.js"></script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turnos - CRM Veterinaria Rincon</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="crm-body">
+
+<div class="crm-shell">
+  <aside class="crm-sidebar">
+    <a href="index.html" class="crm-brand">
+      <div class="brand-icon">🐾</div>
+      Veterinaria Rincon
+    </a>
+
+    <nav class="crm-nav">
+      <a href="crm.html"><span>📊</span> Dashboard</a>
+      <a href="turnos.html" class="active"><span>📅</span> Turnos</a>
+      <a href="clientes.html"><span>🐾</span> Clientes y Mascotas</a>
+      <a href="farmacia.html"><span>💊</span> Farmacia y productos</a>
+      <a href="#"><span>⚙️</span> Configuracion</a>
+    </nav>
+
+    <a href="login.html" class="crm-logout">← Cerrar sesion</a>
+  </aside>
+
+  <main class="crm-main">
+    <header class="crm-topbar">
+      <div>
+        <h1>Turnos</h1>
+        <p>Turnos reservados por los clientes desde el calendario online del sitio.</p>
+      </div>
+      <div class="crm-user">
+        <span class="crm-user-avatar">👩‍⚕️</span>
+        Equipo Veterinario
+      </div>
+    </header>
+
+    <section class="crm-stats">
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-hoy">0</span>
+        <span class="crm-stat-label">Turnos hoy</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-semana">0</span>
+        <span class="crm-stat-label">Turnos esta semana</span>
+      </div>
+      <div class="crm-stat">
+        <span class="crm-stat-num" id="stat-total">0</span>
+        <span class="crm-stat-label">Total reservados</span>
+      </div>
+    </section>
+
+    <section class="crm-panel stock-panel">
+      <h3>Turnos reservados</h3>
+      <div class="stock-table-wrap">
+        <table class="stock-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Cliente</th>
+              <th>Telefono</th>
+              <th>Mascota</th>
+              <th>Motivo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="turnos-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay" id="delete-modal" hidden>
+  <div class="modal-card">
+    <span class="modal-icon">🗑️</span>
+    <h3>Eliminar turno</h3>
+    <p id="delete-modal-text">¿Seguro que queres eliminar este turno?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-admin" id="delete-cancel-btn">Cancelar</button>
+      <button type="button" class="btn-delete-confirm" id="delete-confirm-btn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/turnos.js"></script>
+<script>
+  const MESES_CORTOS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  function formatFecha(fechaStr) {
+    const d = strToDate(fechaStr);
+    return d.getDate() + ' ' + MESES_CORTOS[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function render() {
+    const turnos = loadTurnosPublicos().slice().sort(function (a, b) {
+      return (a.fecha + ' ' + a.hora).localeCompare(b.fecha + ' ' + b.hora);
+    });
+
+    const tbody = document.getElementById('turnos-tbody');
+    tbody.innerHTML = '';
+
+    if (turnos.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="stock-empty-row">Todavia no hay turnos reservados desde el sitio.</td></tr>';
+    }
+
+    turnos.forEach(function (t) {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + formatFecha(t.fecha) + '</td>' +
+        '<td>' + t.hora + '</td>' +
+        '<td class="stock-name">' + (t.nombre || '—') + '</td>' +
+        '<td>' + (t.telefono || '—') + '</td>' +
+        '<td>' + (t.mascota || '—') + '</td>' +
+        '<td>' + (t.motivo || '—') + '</td>' +
+        '<td><button type="button" class="stock-delete-btn" data-id="' + t.id + '" aria-label="Eliminar turno">🗑️</button></td>';
+      tbody.appendChild(tr);
+    });
+
+    const hoyStr = dateToStr(new Date());
+    const en7dias = new Date();
+    en7dias.setDate(en7dias.getDate() + 7);
+    const en7diasStr = dateToStr(en7dias);
+
+    document.getElementById('stat-hoy').textContent = turnos.filter(function (t) { return t.fecha === hoyStr; }).length;
+    document.getElementById('stat-semana').textContent = turnos.filter(function (t) { return t.fecha >= hoyStr && t.fecha <= en7diasStr; }).length;
+    document.getElementById('stat-total').textContent = turnos.length;
+  }
+
+  const deleteModal = document.getElementById('delete-modal');
+  const deleteModalText = document.getElementById('delete-modal-text');
+  let pendingDeleteId = null;
+
+  function closeDeleteModal() { deleteModal.hidden = true; pendingDeleteId = null; }
+
+  document.getElementById('turnos-tbody').addEventListener('click', function (e) {
+    const btn = e.target.closest('.stock-delete-btn');
+    if (!btn) return;
+    pendingDeleteId = btn.dataset.id;
+    const turno = loadTurnosPublicos().find(function (t) { return t.id === pendingDeleteId; });
+    deleteModalText.textContent = '¿Seguro que queres eliminar el turno de "' + (turno ? turno.nombre : '') + '"?';
+    deleteModal.hidden = false;
+  });
+
+  document.getElementById('delete-cancel-btn').addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function (e) { if (e.target === deleteModal) closeDeleteModal(); });
+
+  document.getElementById('delete-confirm-btn').addEventListener('click', function () {
+    if (!pendingDeleteId) return;
+    const turnos = loadTurnosPublicos().filter(function (t) { return t.id !== pendingDeleteId; });
+    saveTurnosPublicos(turnos);
+    closeDeleteModal();
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>

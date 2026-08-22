@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farmacia - CRM Veterinaria Rincon</title>
+<title>Farmacia y productos - CRM Veterinaria Rincon</title>
 <link rel="stylesheet" href="styles/main.css">
 </head>
 <body class="crm-body">
@@ -17,9 +17,9 @@
 
     <nav class="crm-nav">
       <a href="crm.html"><span>📊</span> Dashboard</a>
-      <a href="#"><span>📅</span> Turnos</a>
+      <a href="turnos.html"><span>📅</span> Turnos</a>
       <a href="clientes.html"><span>🐾</span> Clientes y Mascotas</a>
-      <a href="farmacia.html" class="active"><span>💊</span> Farmacia</a>
+      <a href="farmacia.html" class="active"><span>💊</span> Farmacia y productos</a>
       <a href="#"><span>⚙️</span> Configuracion</a>
     </nav>
 
@@ -29,8 +29,8 @@
   <main class="crm-main">
     <header class="crm-topbar">
       <div>
-        <h1>Stock de farmacia</h1>
-        <p>Controla el inventario de medicamentos, vacunas e insumos.</p>
+        <h1>Farmacia y productos</h1>
+        <p>Controla el inventario de medicamentos, vacunas, alimentos y accesorios.</p>
       </div>
       <button type="button" class="btn-hero-primary" id="toggle-add-btn">+ Agregar producto</button>
     </header>
@@ -61,11 +61,17 @@
           <input type="text" name="nombre" placeholder="Ej: Vacuna Antirrabica" required>
         </label>
         <label class="login-field">
+          <span>Codigo</span>
+          <input type="text" name="codigo" placeholder="Ej: VAC-001">
+        </label>
+        <label class="login-field">
           <span>Categoria</span>
           <select name="categoria">
             <option value="Medicamento">Medicamento</option>
             <option value="Vacuna">Vacuna</option>
-            <option value="Insumo">Insumo / Accesorio</option>
+            <option value="Alimento">Alimento</option>
+            <option value="Accesorio">Accesorio</option>
+            <option value="Insumo">Otro insumo</option>
           </select>
         </label>
         <label class="login-field">
@@ -89,6 +95,7 @@
         <table class="stock-table">
           <thead>
             <tr>
+              <th>Codigo</th>
               <th>Producto</th>
               <th>Categoria</th>
               <th>Stock</th>
@@ -120,12 +127,16 @@
   const STORAGE_KEY = 'vetrincon-stock';
 
   const seed = [
-    { nombre: 'Vacuna Antirrabica', categoria: 'Vacuna', stock: 12, minimo: 8 },
-    { nombre: 'Vacuna Quintuple', categoria: 'Vacuna', stock: 2, minimo: 6 },
-    { nombre: 'Amoxicilina 250mg', categoria: 'Medicamento', stock: 0, minimo: 4 },
-    { nombre: 'Antiparasitario Frontline', categoria: 'Medicamento', stock: 3, minimo: 5 },
-    { nombre: 'Desparasitante Oral', categoria: 'Medicamento', stock: 14, minimo: 5 },
-    { nombre: 'Alimento Balanceado Adulto', categoria: 'Insumo', stock: 20, minimo: 10 },
+    { codigo: 'VAC-001', nombre: 'Vacuna Antirrabica', categoria: 'Vacuna', stock: 12, minimo: 8 },
+    { codigo: 'VAC-002', nombre: 'Vacuna Quintuple', categoria: 'Vacuna', stock: 2, minimo: 6 },
+    { codigo: 'MED-001', nombre: 'Amoxicilina 250mg', categoria: 'Medicamento', stock: 0, minimo: 4 },
+    { codigo: 'MED-002', nombre: 'Antiparasitario Frontline', categoria: 'Medicamento', stock: 3, minimo: 5 },
+    { codigo: 'MED-003', nombre: 'Desparasitante Oral', categoria: 'Medicamento', stock: 14, minimo: 5 },
+    { codigo: 'ALI-001', nombre: 'Alimento para Perro Adulto 15kg', categoria: 'Alimento', stock: 8, minimo: 5 },
+    { codigo: 'ALI-002', nombre: 'Alimento para Gato Adulto 7kg', categoria: 'Alimento', stock: 2, minimo: 4 },
+    { codigo: 'ALI-003', nombre: 'Alimento para Cachorro 3kg', categoria: 'Alimento', stock: 12, minimo: 5 },
+    { codigo: 'ACC-001', nombre: 'Collar antipulgas', categoria: 'Accesorio', stock: 10, minimo: 3 },
+    { codigo: 'ACC-002', nombre: 'Correa para perro', categoria: 'Accesorio', stock: 6, minimo: 2 },
   ];
 
   function loadProducts() {
@@ -159,6 +170,7 @@
 
       const tr = document.createElement('tr');
       tr.innerHTML =
+        '<td>' + (p.codigo || '—') + '</td>' +
         '<td class="stock-name">' + p.nombre + '</td>' +
         '<td>' + p.categoria + '</td>' +
         '<td>' + p.stock + '</td>' +
@@ -195,6 +207,7 @@
     const data = new FormData(form);
     const products = loadProducts();
     products.push({
+      codigo: data.get('codigo'),
       nombre: data.get('nombre'),
       categoria: data.get('categoria'),
       stock: Number(data.get('stock')),

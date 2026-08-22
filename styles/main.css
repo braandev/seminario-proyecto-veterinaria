@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --l-bg: #fffdff;
   --l-cream: #f6f1fb;
@@ -260,6 +264,11 @@ body.landing {
   max-width: 1180px;
   margin: 0 auto;
   padding: 60px 5vw;
+  scroll-margin-top: 90px;
+}
+
+.hero {
+  scroll-margin-top: 90px;
 }
 
 .section-heading { text-align: center; margin-bottom: 42px; }
@@ -342,6 +351,132 @@ body.landing {
   display: flex; align-items: center; justify-content: center;
   font-size: 80px;
 }
+
+/* ---------- Reserva de turnos (calendario) ---------- */
+.booking-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 860px) { .booking-wrap { grid-template-columns: 1fr; } }
+
+.booking-calendar,
+.booking-panel {
+  background: white;
+  border: 1px solid var(--l-border);
+  border-radius: var(--l-radius);
+  padding: 24px;
+}
+
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cal-month-label { font-size: 15px; font-weight: 800; text-transform: capitalize; }
+.cal-nav {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--l-border);
+  background: white;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s ease, color .2s ease;
+}
+.cal-nav:hover:not(:disabled) { background: var(--l-dark); color: white; }
+.cal-nav:disabled { opacity: .35; }
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--l-text-muted);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-day {
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--l-text);
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-day.filler { visibility: hidden; }
+.cal-day.open { background: var(--l-accent-soft); cursor: pointer; transition: background .2s ease, color .2s ease, transform .2s ease; }
+.cal-day.open:hover { background: var(--l-accent); color: white; transform: translateY(-1px); }
+.cal-day.selected { background: var(--l-accent) !important; color: white; }
+.cal-day.past,
+.cal-day.closed { color: #c9c2d9; cursor: not-allowed; }
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--l-text-muted);
+  font-weight: 600;
+}
+.calendar-legend span { display: flex; align-items: center; gap: 6px; }
+.cal-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.cal-dot.open { background: var(--l-accent-soft); border: 1px solid var(--l-accent); }
+.cal-dot.closed { background: #e8e4f0; }
+.cal-dot.selected { background: var(--l-accent); }
+
+.booking-panel h3 { margin: 0 0 16px; font-size: 15px; font-weight: 800; }
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 8px;
+}
+.slots-empty { grid-column: 1 / -1; font-size: 13px; color: var(--l-text-muted); }
+
+.slot-btn {
+  padding: 10px 6px;
+  border-radius: var(--l-radius-sm);
+  border: 1px solid var(--l-border);
+  background: var(--l-cream);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--l-text);
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.slot-btn:hover { border-color: var(--l-accent); color: var(--l-accent-2); }
+.slot-btn.selected { background: var(--l-accent); border-color: var(--l-accent); color: white; }
+
+.phone-group { display: flex; gap: 8px; }
+.phone-group .phone-country { flex: 0 0 96px; padding-left: 8px; padding-right: 4px; }
+.phone-group .phone-number { flex: 1; min-width: 0; }
+
+.booking-form { display: flex; flex-direction: column; gap: 16px; }
+.booking-summary {
+  background: var(--l-accent-soft);
+  color: var(--l-accent-2);
+  border-radius: var(--l-radius-sm);
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.booking-success { text-align: center; padding: 10px 0; }
+.booking-success h3 { font-size: 17px; font-weight: 900; margin: 0 0 8px; }
+.booking-success p { font-size: 13.5px; color: var(--l-text-muted); margin: 0 0 20px; }
 
 /* ---------- Horarios / Contacto ---------- */
 .info-grid {
